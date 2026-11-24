@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">سپند AI</string>
+    <string name="a11y_desc">به سپند اجازه می‌دهد وقتی کاری را شروع می‌کنید صفحه را بخواند و برایتان لمس، کشیدن و تایپ کند. هیچ چیزی به جایی ارسال نمی‌شود: هوش مصنوعی روی همین گوشی اجرا می‌شود.</string>
+    <string name="engine_running">موتور هوش مصنوعی در حال اجراست</string>
+    <string name="engine_stop">توقف</string>
+</resources>

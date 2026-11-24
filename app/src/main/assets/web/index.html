@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-theme="dark-red">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="color-scheme" content="dark light">
+<title>Sepand AI</title>
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div class="bg" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i></div>
+
+<div id="app">
+  <header id="top" class="glass">
+    <button id="btn-menu" class="icon-btn" data-act="drawer" aria-label="Chats"></button>
+    <div class="brand"><span class="logo" id="logo"></span><b>Sepand</b></div>
+    <span class="sp"></span>
+    <button id="chip-compute" class="chip" data-act="compute-sheet"></button>
+    <button id="chip-engine" class="chip" data-act="engine-sheet"></button>
+  </header>
+
+  <main id="main">
+    <section id="v-chat" class="view chat-view">
+      <div id="msgs"></div>
+      <div id="dock">
+        <div id="att-row"></div>
+        <div class="composer glass">
+          <div class="cmp-chips">
+            <button class="chip sm" id="chip-think" data-act="think-sheet"></button>
+            <button class="chip sm" id="chip-notes" data-act="go-memory"></button>
+          </div>
+          <div class="cmp-main">
+            <button class="icon-btn" data-act="att-pick" id="btn-att" aria-label="Attach"></button>
+            <textarea id="input" rows="1" autocomplete="off" autocapitalize="sentences"></textarea>
+            <button class="send" id="btn-send" data-act="send" aria-label="Send"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="v-agent" class="view" hidden></section>
+    <section id="v-memory" class="view" hidden></section>
+    <section id="v-tools" class="view" hidden></section>
+    <section id="v-settings" class="view" hidden></section>
+  </main>
+
+  <nav id="tabs" class="glass"></nav>
+</div>
+
+<div id="scrim" data-act="scrim"></div>
+<aside id="drawer" class="glass"></aside>
+<div id="sheet" class="glass"></div>
+<div id="toast"></div>
+
+<script src="js/i18n.js"></script>
+<script src="js/md.js"></script>
+<script src="js/core.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/agent.js"></script>
+<script src="js/boot.js"></script>
+</body>
+</html>

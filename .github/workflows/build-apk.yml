@@ -1,0 +1,75 @@
+name: Build Sepand AI APK
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  LLAMA_TAG: v1.0.0
+
+jobs:
+  native:
+    name: AI engine (llama.cpp for Android)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack project (only needed if you uploaded sepand-ai.zip)
+        run: |
+          if [ -f sepand-ai.zip ] && [ ! -f settings.gradle.kts ]; then
+            mkdir -p _src && unzip -q sepand-ai.zip -d _src
+            root="$(dirname "$(find _src -maxdepth 3 -name settings.gradle.kts | head -n1)")"
+            cp -a "$root"/. .
+          fi
+      - uses: actions/cache@v4
+        with:
+          path: .native/llama.cpp
+          key: llama-${{ env.LLAMA_TAG }}
+      - name: Build llama-server (CPU + Vulkan GPU)
+        run: bash scripts/build-native.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jnilibs
+          path: app/src/main/jniLibs
+          if-no-files-found: error
+
+  apk:
+    name: Android app
+    needs: native
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack project (only needed if you uploaded sepand-ai.zip)
+        run: |
+          if [ -f sepand-ai.zip ] && [ ! -f settings.gradle.kts ]; then
+            mkdir -p _src && unzip -q sepand-ai.zip -d _src
+            root="$(dirname "$(find _src -maxdepth 3 -name settings.gradle.kts | head -n1)")"
+            cp -a "$root"/. .
+          fi
+      - uses: actions/download-artifact@v4
+        with:
+          name: jnilibs
+          path: app/src/main/jniLibs
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.9
+      - name: Build APK
+        run: gradle :app:assembleDebug --no-daemon --stacktrace
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SepandAI-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+      - name: Publish to Releases (easy download on your phone)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp app/build/outputs/apk/debug/app-debug.apk SepandAI.apk
+          gh release delete latest --yes --cleanup-tag || true
+          gh release create latest SepandAI.apk --title "Sepand AI (latest build)" --notes "Download SepandAI.apk and install it." --prerelease

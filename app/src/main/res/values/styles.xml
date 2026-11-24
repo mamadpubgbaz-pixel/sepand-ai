@@ -1,0 +1,8 @@
+<resources>
+    <color name="sepand_bg">#0B0507</color>
+    <style name="AppTheme" parent="@android:style/Theme.DeviceDefault.NoActionBar">
+        <item name="android:windowBackground">@color/sepand_bg</item>
+        <item name="android:statusBarColor">@color/sepand_bg</item>
+        <item name="android:navigationBarColor">@color/sepand_bg</item>
+    </style>
+</resources>
